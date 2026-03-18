@@ -335,7 +335,6 @@ function renderResults(data) {
     // 추정값 fallback
     const t = data.transit_estimate;
     const isRecommended = rec === "transit";
-    const naverUrl = `https://map.naver.com/v5/directions/${data.origin.lng},${data.origin.lat},출발지/${data.hospital.lng},${data.hospital.lat},${encodeURIComponent(data.hospital.name)}/-/-/transit`;
     const card = document.createElement("div");
     card.className = "route-card" + (isRecommended ? " best" : "");
     card.style.borderLeft = isRecommended ? "4px solid #1565C0" : "4px solid #7B1FA2";
@@ -347,8 +346,8 @@ function renderResults(data) {
           <div class="route-total-time">${Math.round(t.total_minutes)}<span>분 (추정)</span></div>
           <div class="route-arrival">거리 약 ${(t.distance_m / 1000).toFixed(1)}km</div>
         </div>
-        <div class="route-meta" style="text-align:right;">
-          <a href="${naverUrl}" target="_blank" class="map-link" style="font-size:12px;">🗺 네이버지도에서<br>실제 경로 보기</a>
+        <div class="route-meta">
+          ${mapLinksHtml(data.origin.lat, data.origin.lng, data.origin.address || "출발지", data.hospital.lat, data.hospital.lng, data.hospital.name, "transit")}
         </div>
       </div>
     `;
@@ -432,18 +431,34 @@ function createRouteCard(route, isBest) {
   return card;
 }
 
+// ===== 지도 링크 헬퍼 =====
+function mapLinksHtml(fLat, fLng, fName, tLat, tLng, tName, mode = "transit") {
+  const timeVal = elTimeInput ? elTimeInput.value : "";
+
+  const naverUrl = `https://map.naver.com/v5/directions/${fLng},${fLat},${encodeURIComponent(fName)}/${tLng},${tLat},${encodeURIComponent(tName)}/-/-/${mode}`;
+  const kakaoUrl = `https://map.kakao.com/link/from/${encodeURIComponent(fName)},${fLat},${fLng}/to/${encodeURIComponent(tName)},${tLat},${tLng}`;
+
+  const timeHint = timeVal
+    ? `<div class="map-link-timehint">출발 ${timeVal} 기준으로 직접 설정하세요</div>`
+    : "";
+
+  return `
+    <div class="map-links">
+      ${timeHint}
+      <a href="${naverUrl}" target="_blank" class="map-link map-link-naver">네이버지도</a>
+      <a href="${kakaoUrl}" target="_blank" class="map-link map-link-kakao">카카오맵</a>
+    </div>`;
+}
+
 function renderSegment(seg) {
   if (seg.type === "walk") {
-    const naverUrl = `https://map.naver.com/v5/directions/${seg.from_lng},${seg.from_lat},출발지/${seg.to_lng},${seg.to_lat},${encodeURIComponent(seg.to_name)}/-/-/walk`;
     return `
       <li class="segment-item">
         <div class="segment-icon seg-walk">🚶</div>
         <div class="segment-info">
           <div class="segment-label">도보</div>
           <div class="segment-desc">${seg.from_name} → ${seg.to_name} · 약 ${seg.distance_m}m</div>
-          <div class="segment-desc" style="margin-top:4px;">
-            <a href="${naverUrl}" target="_blank" class="map-link">🗺 네이버지도에서 경로 보기</a>
-          </div>
+          ${mapLinksHtml(seg.from_lat, seg.from_lng, seg.from_name, seg.to_lat, seg.to_lng, seg.to_name, "walk")}
         </div>
         <div class="segment-time">${Math.round(seg.duration_minutes)}분</div>
       </li>
@@ -451,9 +466,6 @@ function renderSegment(seg) {
   }
 
   if (seg.type === "transit_to_stop") {
-    const naverUrl = `https://map.naver.com/v5/directions/${seg.from_lng},${seg.from_lat},출발지/${seg.to_lng},${seg.to_lat},${encodeURIComponent(seg.to_name)}/-/-/transit`;
-
-    // ODsay 상세 정보가 있으면 세부 세그먼트 표시
     if (seg.detail && seg.detail.length > 0) {
       const detailHtml = seg.detail.map((d) => {
         const timeTag = d.start_time ? `<span class="seg-dep-time">${d.start_time}</span> ` : "";
@@ -479,21 +491,19 @@ function renderSegment(seg) {
           </div>
           <div style="padding-left:52px;width:100%;box-sizing:border-box;">
             ${detailHtml}
+            ${mapLinksHtml(seg.from_lat, seg.from_lng, seg.from_name, seg.to_lat, seg.to_lng, seg.to_name, "transit")}
           </div>
         </li>
       `;
     }
 
-    // ODsay 없으면 추정값 + 네이버지도 링크
     return `
       <li class="segment-item">
         <div class="segment-icon seg-transit">🚇</div>
         <div class="segment-info">
           <div class="segment-label">대중교통 이동 <span style="font-size:10px;color:#9E9E9E;">(추정)</span></div>
           <div class="segment-desc">${seg.from_name} → ${seg.to_name}</div>
-          <div class="segment-desc" style="margin-top:4px;">
-            <a href="${naverUrl}" target="_blank" class="map-link">🗺 네이버지도에서 경로 보기</a>
-          </div>
+          ${mapLinksHtml(seg.from_lat, seg.from_lng, seg.from_name, seg.to_lat, seg.to_lng, seg.to_name, "transit")}
         </div>
         <div class="segment-time">약 ${Math.round(seg.duration_minutes)}분</div>
       </li>
@@ -557,6 +567,11 @@ function createTransitCard(route, isRecommended) {
       <ul class="segment-list">
         ${route.segments.map(renderTransitSegment).join("")}
       </ul>
+      ${currentRouteData ? mapLinksHtml(
+          currentRouteData.origin.lat, currentRouteData.origin.lng, currentRouteData.origin.address || "출발지",
+          currentRouteData.hospital.lat, currentRouteData.hospital.lng, currentRouteData.hospital.name,
+          "transit"
+        ) : ""}
     </div>
   `;
 
