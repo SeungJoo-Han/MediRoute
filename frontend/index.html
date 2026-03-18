@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MediRoute - 대학병원 셔틀 길찾기</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/static/css/style.css?v=14" />
+</head>
+<body>
+
+  <header>
+    <div>
+      <div class="logo">Medi<span>Route</span></div>
+      <div class="header-sub">대학병원 셔틀버스 포함 길찾기</div>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- API 키 미설정 경고 -->
+    <div id="api-warning" class="api-warning">
+      ⚠️ 카카오 API 키가 설정되지 않았습니다. 지도 표시와 주소 검색이 제한됩니다.
+      <a href="https://developers.kakao.com" target="_blank">카카오 개발자센터</a>에서
+      API 키를 발급 후 <code>.env</code> 파일에 설정하세요.
+      (<a href="#" onclick="document.getElementById('api-warning').style.display='none'; return false;">닫기</a>)
+    </div>
+
+    <!-- 검색 카드 -->
+    <div class="search-card">
+      <h2>🏥 병원 셔틀 포함 길찾기</h2>
+
+      <div class="form-group">
+        <label for="origin-input">출발지</label>
+        <div class="input-wrap" style="position:relative;">
+          <span class="icon">📍</span>
+          <input
+            type="text"
+            id="origin-input"
+            placeholder="출발지 주소 또는 장소명을 입력하세요"
+            autocomplete="off"
+          />
+          <div id="autocomplete-list" class="autocomplete-list" style="display:none;"></div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>목적지 병원</label>
+        <div class="input-wrap" style="position:relative;">
+          <span class="icon">🏥</span>
+          <input
+            type="text"
+            id="hospital-search"
+            placeholder="병원명 검색 또는 클릭하여 선택"
+            autocomplete="off"
+          />
+          <div id="hospital-list" class="autocomplete-list" style="display:none;"></div>
+        </div>
+      </div>
+
+      <div class="form-group" style="margin-bottom:14px;">
+        <label>날짜</label>
+        <div id="date-chips" class="date-chips"></div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group" style="margin-bottom:0;">
+          <label for="time-input">출발 시간</label>
+          <div class="input-wrap">
+            <span class="icon">🕐</span>
+            <input type="time" id="time-input" />
+          </div>
+        </div>
+        <div style="display:flex;align-items:flex-end;">
+          <button class="btn-search" id="search-btn">
+            <span>길찾기</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 로딩 -->
+    <div id="loading" class="loading-overlay">
+      <div class="spinner"></div>
+      <span>경로를 탐색하는 중입니다...</span>
+    </div>
+
+    <!-- 지도 -->
+    <div id="map-container">
+      <div id="map"></div>
+      <div class="map-legend">
+        <div class="legend-item">
+          <div class="legend-dot" style="background:#1565C0;"></div>
+          <span>출발지</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-dot" style="background:#C62828;"></div>
+          <span>병원</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-dot" style="background:#2E7D32;"></div>
+          <span>셔틀 정류장</span>
+        </div>
+        <div class="legend-item">
+          <div style="width:24px;height:3px;border-top:2px dashed #9E9E9E;"></div>
+          <span>도보</span>
+        </div>
+        <div class="legend-item">
+          <div style="width:24px;height:3px;border-top:2px dashed #7B1FA2;"></div>
+          <span>대중교통 이동</span>
+        </div>
+        <div class="legend-item">
+          <div style="width:24px;height:3px;background:#1565C0;"></div>
+          <span>지하철</span>
+        </div>
+        <div class="legend-item">
+          <div style="width:24px;height:3px;background:#E65100;"></div>
+          <span>버스</span>
+        </div>
+        <div class="legend-item">
+          <div style="width:24px;height:3px;background:#2E7D32;"></div>
+          <span>셔틀</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 결과 -->
+    <div id="results-container">
+      <div class="results-header">
+        🗺️ 경로 결과
+        <span id="result-info"></span>
+      </div>
+      <div id="route-cards"></div>
+    </div>
+
+    <!-- 셔틀 시간표 섹션 -->
+    <div class="search-card" id="schedule-section" style="display:none;">
+      <h2>🚌 셔틀 운행 시간표</h2>
+      <div id="schedule-content"></div>
+    </div>
+
+  </main>
+
+  <footer style="text-align:center;padding:20px 16px;font-size:12px;color:#9E9E9E;border-top:1px solid #E0E0E0;margin-top:auto;">
+    셔틀 시간표는 병원 사정에 따라 변경될 수 있습니다. 이용 전 병원 홈페이지에서 확인하세요.<br/>
+    MediRoute · 대학병원 셔틀버스 포함 경로 안내
+  </footer>
+
+  <script src="/static/js/map.js?v=14"></script>
+  <script src="/static/js/app.js?v=14"></script>
+
+</body>
+</html>
