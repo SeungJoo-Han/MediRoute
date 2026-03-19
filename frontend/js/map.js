@@ -97,8 +97,7 @@ const MapManager = (() => {
   }
 
   /**
-   * 지하철/버스/도보 세그먼트 하나를 지도에 그림.
-   * ODsay 데이터 기반 (subway·bus에만 좌표 있음, walk는 좌표 없어 스킵).
+   * 지하철/버스 세그먼트 하나를 지도에 그림 (좌표 있는 경우만).
    */
   function drawTransitSeg(seg, allPoints) {
     if (seg.type === "subway" && seg.from_lat && seg.to_lat) {
@@ -122,9 +121,30 @@ const MapManager = (() => {
       addMarker({ lat: seg.to_lat,   lng: seg.to_lng,   label: seg.to_name,   color: COLORS.bus,    zIndex: 3 });
       allPoints.push({ lat: seg.from_lat, lng: seg.from_lng });
       allPoints.push({ lat: seg.to_lat,   lng: seg.to_lng   });
-
     }
-    // walk: ODsay가 좌표를 제공하지 않으므로 스킵
+    // walk: 좌표 없음 → 호출부에서 전후 세그먼트 좌표로 추론
+  }
+
+  /**
+   * 세그먼트 배열에서 walk 구간의 시작/끝 좌표를 전후 세그먼트로 추론하여 점선으로 그림.
+   * fallbackFrom/To: 배열 맨 앞/뒤 walk의 fallback 좌표 (출발지/목적지)
+   */
+  function drawSegmentsWithWalk(segs, allPoints, fallbackFrom, fallbackTo) {
+    segs.forEach((seg, idx) => {
+      if (seg.type === "walk") {
+        // 이전 세그먼트 끝점 or fallbackFrom
+        const prev = segs.slice(0, idx).reverse().find((s) => s.to_lat);
+        const next = segs.slice(idx + 1).find((s) => s.from_lat);
+        const fromPt = prev ? { lat: prev.to_lat, lng: prev.to_lng } : fallbackFrom;
+        const toPt   = next ? { lat: next.from_lat, lng: next.from_lng } : fallbackTo;
+        if (fromPt && toPt) {
+          drawLine({ points: [fromPt, toPt], color: COLORS.walk, dashed: true, strokeWeight: 3 });
+          allPoints.push(fromPt, toPt);
+        }
+      } else {
+        drawTransitSeg(seg, allPoints);
+      }
+    });
   }
 
   /**
@@ -165,8 +185,12 @@ const MapManager = (() => {
 
       } else if (seg.type === "transit_to_stop") {
         if (seg.detail && seg.detail.length > 0) {
-          // ODsay 상세 데이터: 지하철/버스/도보 각각 제대로 그림
-          seg.detail.forEach((d) => drawTransitSeg(d, allPoints));
+          // ODsay 상세 데이터: 지하철/버스/도보 각각 제대로 그림 (walk는 전후 좌표 추론)
+          drawSegmentsWithWalk(
+            seg.detail, allPoints,
+            { lat: seg.from_lat, lng: seg.from_lng },
+            { lat: seg.to_lat,   lng: seg.to_lng   }
+          );
         } else {
           // ODsay 없음: 출발→정류장 추정 점선
           drawLine({
@@ -215,7 +239,11 @@ const MapManager = (() => {
       allPoints.push(routeData.hospital);
     }
 
-    (transitRoute.segments || []).forEach((seg) => drawTransitSeg(seg, allPoints));
+    drawSegmentsWithWalk(
+      transitRoute.segments || [], allPoints,
+      routeData.origin,
+      routeData.hospital
+    );
 
     fitBounds(allPoints);
   }
