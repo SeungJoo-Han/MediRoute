@@ -64,6 +64,57 @@ async def get_car_duration_minutes(
         return None
 
 
+async def get_car_route(
+    from_lat: float, from_lng: float,
+    to_lat: float, to_lng: float,
+) -> Optional[dict]:
+    """
+    카카오 Mobility Directions API로 자동차 소요시간 + 실제 도로 좌표 반환.
+    반환: {"duration_min": float, "road_coords": [{lat, lng}, ...]} or None
+    """
+    if not KAKAO_REST_API_KEY:
+        return None
+
+    try:
+        async with httpx.AsyncClient(timeout=10.0) as client:
+            resp = await client.get(
+                f"{KAKAO_NAVI_BASE}/directions",
+                headers=_headers(),
+                params={
+                    "origin": f"{from_lng},{from_lat}",
+                    "destination": f"{to_lng},{to_lat}",
+                    "priority": "RECOMMEND",
+                },
+            )
+            resp.raise_for_status()
+            data = resp.json()
+
+        routes = data.get("routes", [])
+        if not routes or routes[0].get("result_code") != 0:
+            return None
+
+        route = routes[0]
+        duration_min = round(route["summary"]["duration"] / 60, 1)
+
+        # vertexes: [lng1, lat1, lng2, lat2, ...]
+        road_coords = []
+        for section in route.get("sections", []):
+            for road in section.get("roads", []):
+                vx = road.get("vertexes", [])
+                for i in range(0, len(vx) - 1, 2):
+                    road_coords.append({"lat": vx[i + 1], "lng": vx[i]})
+
+        # duration 캐시도 갱신
+        cache_key = (round(from_lat, 5), round(from_lng, 5), round(to_lat, 5), round(to_lng, 5))
+        _car_duration_cache[cache_key] = duration_min
+
+        return {"duration_min": duration_min, "road_coords": road_coords}
+
+    except Exception as e:
+        print(f"[Kakao Navi] 자동차 경로 오류: {e}")
+        return None
+
+
 async def geocode_address(address: str) -> Optional[dict]:
     """
     주소 문자열을 위경도 좌표로 변환.

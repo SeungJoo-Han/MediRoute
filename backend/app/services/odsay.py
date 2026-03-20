@@ -71,9 +71,53 @@ async def search_transit_routes(
             "fare": info.get("payment", 0),
             "transfers": info.get("busTransitCount", 0) + info.get("subwayTransitCount", 0),
             "segments": segments,
+            "map_obj": info.get("mapObj", ""),
         })
 
     return routes if routes else None
+
+
+async def load_lane(map_obj: str) -> Optional[list]:
+    """
+    ODsay loadLane: 노선 실제 폴리라인 좌표 반환.
+    mapObject 형식: "0:0@{mapObj}"
+    반환: [[{lat, lng}, ...], ...] (transit 세그먼트별 좌표 배열 리스트)
+    """
+    if not ODSAY_API_KEY or not map_obj:
+        return None
+    try:
+        async with httpx.AsyncClient(timeout=10.0) as client:
+            resp = await client.get(
+                f"{ODSAY_BASE}/loadLane",
+                params={
+                    "mapObject": f"0:0@{map_obj}",
+                    "apiKey": ODSAY_API_KEY,
+                },
+                headers={"Referer": "http://localhost:8000"},
+            )
+            resp.raise_for_status()
+            data = resp.json()
+    except Exception as e:
+        print(f"[loadLane] 오류: {e}")
+        return None
+
+    if "error" in data:
+        print(f"[loadLane] 에러: {data['error']}")
+        return None
+
+    lanes = data.get("result", {}).get("lane", [])
+    result = []
+    for lane in lanes:
+        points = []
+        for section in lane.get("section", []):
+            for pos in section.get("graphPos", []):
+                x = pos.get("x")
+                y = pos.get("y")
+                if x is not None and y is not None:
+                    points.append({"lat": float(y), "lng": float(x)})
+        if points:
+            result.append(points)
+    return result if result else None
 
 
 def _parse_subpaths(subpaths: list) -> list:

@@ -4,9 +4,9 @@ from typing import Optional
 from datetime import datetime, timedelta
 import asyncio
 
-from ..services.kakao import geocode_address, search_keyword, get_car_duration_minutes
+from ..services.kakao import geocode_address, search_keyword, get_car_route
 from ..services.optimizer import calculate_routes, _next_departure, TRANSFER_BUFFER_MINUTES, find_hospital, _get_day_type
-from ..services.odsay import search_transit_routes
+from ..services.odsay import search_transit_routes, load_lane
 from ..config import KAKAO_JS_KEY, ODSAY_API_KEY
 
 router = APIRouter(tags=["navigation"])
@@ -91,7 +91,7 @@ async def find_route(req: RouteRequest):
         for s_idx, seg in enumerate(route["segments"]):
             if seg["type"] == "shuttle":
                 shuttle_car_tasks.append(
-                    get_car_duration_minutes(
+                    get_car_route(
                         seg["from_lat"], seg["from_lng"],
                         seg["to_lat"], seg["to_lng"],
                     )
@@ -100,12 +100,15 @@ async def find_route(req: RouteRequest):
 
     if shuttle_car_tasks:
         car_results = await asyncio.gather(*shuttle_car_tasks, return_exceptions=True)
-        for (r_idx, s_idx), car_min in zip(shuttle_seg_refs, car_results):
-            if isinstance(car_min, Exception) or car_min is None:
+        for (r_idx, s_idx), car_result in zip(shuttle_seg_refs, car_results):
+            if isinstance(car_result, Exception) or car_result is None:
                 continue
             seg = result["routes"][r_idx]["segments"][s_idx]
             old_min = seg["duration_minutes"]
+            car_min = car_result["duration_min"]
             seg["duration_minutes"] = car_min
+            if car_result.get("road_coords"):
+                seg["road_coords"] = car_result["road_coords"]
             result["routes"][r_idx]["total_minutes"] += (car_min - old_min)
             arrival = dep_dt + timedelta(minutes=result["routes"][r_idx]["total_minutes"])
             result["routes"][r_idx]["arrival_time"] = arrival.strftime("%H:%M")
@@ -186,6 +189,7 @@ async def find_route(req: RouteRequest):
             "duration_minutes": new_transit_min,
             "transit_fare": best.get("fare", 0),
             "detail": detail_segments,
+            "detail_map_obj": best.get("map_obj", ""),
         }
 
         # 실제 대중교통 소요시간을 반영해 대기 세그먼트와 셔틀 출발 시각 재계산
@@ -245,7 +249,34 @@ async def find_route(req: RouteRequest):
                 route["transit_fare"] = seg["transit_fare"]
                 break
 
-    # 8. 모든 시간 업데이트 완료 후 재정렬 + 추천 결정
+    # 8. loadLane: transit 세그먼트에 실제 폴리라인 좌표 주입
+    lane_tasks = []
+    lane_targets = []  # (target_type, obj)  target_type: "transit" | "detail"
+
+    if transit_routes_raw:
+        for t in transit_routes_raw:
+            if t.get("map_obj"):
+                lane_tasks.append(load_lane(t["map_obj"]))
+                lane_targets.append(("transit", t))
+
+    for route in result["routes"]:
+        for seg in route.get("segments", []):
+            if seg["type"] == "transit_to_stop" and seg.get("detail_map_obj"):
+                lane_tasks.append(load_lane(seg["detail_map_obj"]))
+                lane_targets.append(("detail", seg))
+
+    if lane_tasks:
+        lane_results = await asyncio.gather(*lane_tasks, return_exceptions=True)
+        for (target_type, target), lanes in zip(lane_targets, lane_results):
+            if isinstance(lanes, Exception) or not lanes:
+                continue
+            segs = target["segments"] if target_type == "transit" else target.get("detail", [])
+            transit_segs = [s for s in segs if s["type"] in ("subway", "bus")]
+            for i, s in enumerate(transit_segs):
+                if i < len(lanes):
+                    s["lane_coords"] = lanes[i]
+
+    # 9. 모든 시간 업데이트 완료 후 재정렬 + 추천 결정
     if result["routes"]:
         result["routes"].sort(key=lambda r: r["total_minutes"])
 

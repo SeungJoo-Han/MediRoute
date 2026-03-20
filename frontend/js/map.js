@@ -100,28 +100,22 @@ const MapManager = (() => {
    * 지하철/버스 세그먼트 하나를 지도에 그림 (좌표 있는 경우만).
    */
   function drawTransitSeg(seg, allPoints) {
-    if (seg.type === "subway" && seg.from_lat && seg.to_lat) {
-      drawLine({
-        points: [{ lat: seg.from_lat, lng: seg.from_lng }, { lat: seg.to_lat, lng: seg.to_lng }],
-        color: COLORS.subway,
-        strokeWeight: 5,
-      });
-      addMarker({ lat: seg.from_lat, lng: seg.from_lng, label: seg.from_name, color: COLORS.subway, zIndex: 3 });
-      addMarker({ lat: seg.to_lat,   lng: seg.to_lng,   label: seg.to_name,   color: COLORS.subway, zIndex: 3 });
-      allPoints.push({ lat: seg.from_lat, lng: seg.from_lng });
-      allPoints.push({ lat: seg.to_lat,   lng: seg.to_lng   });
+    const isSubway = seg.type === "subway";
+    const isBus    = seg.type === "bus";
+    if ((!isSubway && !isBus) || !seg.from_lat || !seg.to_lat) return;
 
-    } else if (seg.type === "bus" && seg.from_lat && seg.to_lat) {
-      drawLine({
-        points: [{ lat: seg.from_lat, lng: seg.from_lng }, { lat: seg.to_lat, lng: seg.to_lng }],
-        color: COLORS.bus,
-        strokeWeight: 5,
-      });
-      addMarker({ lat: seg.from_lat, lng: seg.from_lng, label: seg.from_name, color: COLORS.bus, zIndex: 3 });
-      addMarker({ lat: seg.to_lat,   lng: seg.to_lng,   label: seg.to_name,   color: COLORS.bus,    zIndex: 3 });
-      allPoints.push({ lat: seg.from_lat, lng: seg.from_lng });
-      allPoints.push({ lat: seg.to_lat,   lng: seg.to_lng   });
-    }
+    const color = isSubway ? COLORS.subway : COLORS.bus;
+
+    // lane_coords 있으면 실제 선로/도로 곡선, 없으면 직선 fallback
+const linePoints = (seg.lane_coords && seg.lane_coords.length >= 2)
+      ? seg.lane_coords
+      : [{ lat: seg.from_lat, lng: seg.from_lng }, { lat: seg.to_lat, lng: seg.to_lng }];
+
+    drawLine({ points: linePoints, color, strokeWeight: 5 });
+    addMarker({ lat: seg.from_lat, lng: seg.from_lng, label: seg.from_name, color, zIndex: 3 });
+    addMarker({ lat: seg.to_lat,   lng: seg.to_lng,   label: seg.to_name,   color, zIndex: 3 });
+    allPoints.push({ lat: seg.from_lat, lng: seg.from_lng });
+    allPoints.push({ lat: seg.to_lat,   lng: seg.to_lng   });
     // walk: 좌표 없음 → 호출부에서 전후 세그먼트 좌표로 추론
   }
 
@@ -205,12 +199,11 @@ const MapManager = (() => {
         allPoints.push({ lat: seg.to_lat, lng: seg.to_lng });
 
       } else if (seg.type === "shuttle") {
-        // 셔틀버스: 초록 실선
-        drawLine({
-          points: [{ lat: seg.from_lat, lng: seg.from_lng }, { lat: seg.to_lat, lng: seg.to_lng }],
-          color: COLORS.shuttle,
-          strokeWeight: 5,
-        });
+        // 셔틀버스: 초록 실선 (road_coords 있으면 실제 도로선)
+        const shuttlePoints = (seg.road_coords && seg.road_coords.length >= 2)
+          ? seg.road_coords
+          : [{ lat: seg.from_lat, lng: seg.from_lng }, { lat: seg.to_lat, lng: seg.to_lng }];
+        drawLine({ points: shuttlePoints, color: COLORS.shuttle, strokeWeight: 5 });
         allPoints.push({ lat: seg.from_lat, lng: seg.from_lng });
         allPoints.push({ lat: seg.to_lat,   lng: seg.to_lng   });
       }
@@ -226,7 +219,7 @@ const MapManager = (() => {
    */
   function renderTransitRoute(routeData, transitRoute) {
     if (!map) return;
-    clear();
+clear();
 
     const allPoints = [];
 
