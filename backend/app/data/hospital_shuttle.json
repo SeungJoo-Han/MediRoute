@@ -143,8 +143,8 @@
               "stop_id": "daebang-7",
               "name": "대방역 7번출구",
               "address": "서울특별시 영등포구 대방동 대방역 7번출구 앞",
-              "lat": 37.51364451272309,
-              "lng": 126.92689687889553,
+              "lat": 37.5182708055078,
+              "lng": 126.936729826762,
               "order": 2,
               "is_origin": false
             }
@@ -197,8 +197,8 @@
               "stop_id": "yeouido-5",
               "name": "여의도역 5번출구",
               "address": "서울특별시 영등포구 여의공원로 여의도역 5번출구 앞",
-              "lat": 37.5217251351713,
-              "lng": 126.924705733787,
+              "lat": 37.5182708055078,
+              "lng": 126.936729826762,
               "order": 2,
               "is_origin": false
             }
@@ -239,8 +239,8 @@
       "name": "가톨릭대학교 서울성모병원",
       "short_name": "서울성모병원",
       "address": "서울특별시 서초구 반포대로 222",
-      "lat": 37.5023936158073,
-      "lng": 127.005860604348,
+      "lat": 37.50170169277866,
+      "lng": 127.00476118110912,
       "phone": "1588-1511",
       "website": "https://www.cmcseoul.or.kr",
       "shuttle_info_url": "https://www.cmcseoul.or.kr/hospitalguide.map.sp",
@@ -255,8 +255,8 @@
               "stop_id": "express-terminal-3",
               "name": "고속터미널역 3번출구",
               "address": "서울특별시 서초구 신반포로 194 고속터미널역 3번출구 앞",
-              "lat": 37.5064357442307,
-              "lng": 127.006834366246,
+              "lat": 37.503449611975896,
+              "lng": 127.00549640846101,
               "order": 1,
               "is_origin": true
             },
@@ -264,8 +264,8 @@
               "stop_id": "cmcseoul-main-gate",
               "name": "서울성모병원 정문(남문)",
               "address": "서울특별시 서초구 반포대로 222",
-              "lat": 37.5023936158073,
-              "lng": 127.005860604348,
+              "lat": 37.50170169277866,
+              "lng": 127.00476118110912,
               "order": 2,
               "is_origin": false
             }
@@ -317,8 +317,8 @@
               "stop_id": "cmcseoul-main-gate",
               "name": "서울성모병원 정문(남문)",
               "address": "서울특별시 서초구 반포대로 222",
-              "lat": 37.5023936158073,
-              "lng": 127.005860604348,
+              "lat": 37.50170169277866,
+              "lng": 127.00476118110912,
               "order": 2,
               "is_origin": false
             }
@@ -358,8 +358,8 @@
       "name": "삼성서울병원",
       "short_name": "삼성서울병원",
       "address": "서울특별시 강남구 일원로 81",
-      "lat": 37.49034450782,
-      "lng": 127.089590154403,
+      "lat": 37.4881180001162,
+      "lng": 127.08536913046,
       "phone": "1599-3114",
       "website": "http://www.samsunghospital.com",
       "shuttle_info_url": "http://www.samsunghospital.com/home/info/map.do",
@@ -374,8 +374,8 @@
               "stop_id": "srt-suseo-3",
               "name": "SRT수서역 3번출구",
               "address": "서울특별시 강남구 수서동 수서고속철도역 3번출구",
-              "lat": 37.48783,
-              "lng": 127.11199,
+              "lat": 37.48480647410937,
+              "lng": 127.10480152377693,
               "order": 1,
               "is_origin": true
             },
@@ -383,8 +383,8 @@
               "stop_id": "samsungh-main",
               "name": "삼성서울병원 본관",
               "address": "서울특별시 강남구 일원로 81",
-              "lat": 37.49034450782,
-              "lng": 127.089590154403,
+              "lat": 37.4881180001162,
+              "lng": 127.08536913046,
               "order": 2,
               "is_origin": false
             }
@@ -429,8 +429,8 @@
               "stop_id": "suseo-1",
               "name": "수서역 1번출구",
               "address": "서울특별시 강남구 광평로 281 수서역 1번출구",
-              "lat": 37.4881247193412,
-              "lng": 127.103147850146,
+              "lat": 37.48586143115538,
+              "lng": 127.10392106502472,
               "order": 1,
               "is_origin": true
             },
@@ -438,8 +438,8 @@
               "stop_id": "samsungh-main",
               "name": "삼성서울병원 본관",
               "address": "서울특별시 강남구 일원로 81",
-              "lat": 37.49034450782,
-              "lng": 127.089590154403,
+              "lat": 37.4881180001162,
+              "lng": 127.08536913046,
               "order": 2,
               "is_origin": false
             }
@@ -484,8 +484,8 @@
               "stop_id": "ilwon-1",
               "name": "일원역 1번출구",
               "address": "서울특별시 강남구 일원로 일원역 1번출구",
-              "lat": 37.4840749361128,
-              "lng": 127.084450960111,
+              "lat": 37.48436367892394,
+              "lng": 127.08386108050672,
               "order": 1,
               "is_origin": true
             },
@@ -493,8 +493,8 @@
               "stop_id": "samsungh-main",
               "name": "삼성서울병원 본관",
               "address": "서울특별시 강남구 일원로 81",
-              "lat": 37.49034450782,
-              "lng": 127.089590154403,
+              "lat": 37.4881180001162,
+              "lng": 127.08536913046,
               "order": 2,
               "is_origin": false
             }
@@ -536,8 +536,8 @@
       "name": "서울아산병원",
       "short_name": "서울아산병원",
       "address": "서울특별시 송파구 올림픽로43길 88",
-      "lat": 37.525171129004,
-      "lng": 127.109380463701,
+      "lat": 37.526200614508994,
+      "lng": 127.10761409822122,
       "phone": "1688-7575",
       "website": "https://www.amc.seoul.kr",
       "shuttle_info_url": "https://www.amc.seoul.kr/asan/hospitalguide/location/location.do?by=bus&lo=shuttle01",
@@ -561,8 +561,8 @@
               "stop_id": "amc-cic",
               "name": "서울아산병원 감염관리센터 앞",
               "address": "서울특별시 송파구 올림픽로43길 88",
-              "lat": 37.525171129004,
-              "lng": 127.109380463701,
+              "lat": 37.526200614508994,
+              "lng": 127.10761409822122,
               "order": 2,
               "is_origin": false
             }
@@ -598,8 +598,8 @@
               "stop_id": "srt-suseo-3",
               "name": "SRT 수서역 3번출구",
               "address": "서울특별시 강남구 광평로 281 수서역 3번출구 SRT 수서역 셔틀버스 정류장",
-              "lat": 37.4881247193412,
-              "lng": 127.103147850146,
+              "lat": 37.48480647410937,
+              "lng": 127.10480152377693,
               "order": 1,
               "is_origin": true
             },
@@ -607,8 +607,8 @@
               "stop_id": "amc-parking",
               "name": "서울아산병원 중앙주차장",
               "address": "서울특별시 송파구 올림픽로43길 88 서울아산병원",
-              "lat": 37.525171129004,
-              "lng": 127.109380463701,
+              "lat": 37.526200614508994,
+              "lng": 127.10761409822122,
               "order": 2,
               "is_origin": false
             }
@@ -641,8 +641,8 @@
       "name": "신촌세브란스병원",
       "short_name": "신촌세브란스",
       "address": "서울특별시 서대문구 연세로 50-1",
-      "lat": 37.563674036531,
-      "lng": 126.941917689273,
+      "lat": 37.56225233153921,
+      "lng": 126.94096340991969,
       "phone": "1599-1004",
       "website": "https://sev.severance.healthcare",
       "shuttle_info_url": "https://sev.severance.healthcare/sev/about/location/map.do",
@@ -666,8 +666,8 @@
               "stop_id": "severance-sinchon-cancer",
               "name": "신촌세브란스 암병원 3층",
               "address": "서울특별시 서대문구 연세로 50-1 신촌세브란스병원 암병원",
-              "lat": 37.563674036531,
-              "lng": 126.941917689273,
+              "lat": 37.56225233153921,
+              "lng": 126.94096340991969,
               "order": 2,
               "is_origin": false
             }
@@ -697,9 +697,9 @@
         },
         {
           "route_id": "severance-sinchon-02",
-          "route_name": "경복궁역·서울서부역 → 신촌세브란스병원",
+          "route_name": "경복궁역·서울(서부)역 → 신촌세브란스병원",
           "direction": "to_hospital",
-          "description": "3호선 경복궁역 1번출구 & 서울서부역(코레일 본사 앞) → 암병원 3층",
+          "description": "3호선 경복궁역 1번출구 & 서울(서부)역 코레일 서울본부 앞 → 암병원 3층",
           "stops": [
             {
               "stop_id": "gyeongbokgung-1",
@@ -712,10 +712,10 @@
             },
             {
               "stop_id": "seoul-west-station",
-              "name": "서울서부역(코레일 본사 앞)",
-              "address": "서울특별시 마포구 만리재로 서울서부역",
-              "lat": 37.5567,
-              "lng": 126.9572,
+              "name": "서울(서부)역",
+              "address": "서울특별시 중구 청파로 426 한국철도공사 서울본부 앞",
+              "lat": 37.557113941077986,
+              "lng": 126.96944817172442,
               "order": 2,
               "is_origin": false
             },
@@ -723,8 +723,8 @@
               "stop_id": "severance-sinchon-cancer",
               "name": "신촌세브란스 암병원 3층",
               "address": "서울특별시 서대문구 연세로 50-1 신촌세브란스병원 암병원",
-              "lat": 37.563674036531,
-              "lng": 126.941917689273,
+              "lat": 37.56225233153921,
+              "lng": 126.94096340991969,
               "order": 3,
               "is_origin": false
             }
@@ -750,20 +750,20 @@
             "holiday": null
           },
           "fare": "무료",
-          "notes": "배차 간격 30분 / 3호선 경복궁역 1번출구 → 서울서부역 경유 → 암병원 3층 / 평일만 운행"
+          "notes": "배차 간격 30분 / 3호선 경복궁역 1번출구 → 서울(서부)역 경유 → 암병원 3층 / 평일만 운행"
         },
         {
           "route_id": "severance-sinchon-03",
-          "route_name": "서울서부역·용산역 → 신촌세브란스병원",
+          "route_name": "서울(서부)역·용산역 → 신촌세브란스병원",
           "direction": "to_hospital",
-          "description": "서울서부역 코레일 본사 앞 → 용산역 공항버스 정류장 경유 → 본관 3층",
+          "description": "서울(서부)역 코레일 서울본부 앞 → 용산역 공항버스 정류장 경유 → 본관 3층",
           "stops": [
             {
               "stop_id": "seoul-west-station-2",
-              "name": "서울서부역(코레일 본사 앞)",
-              "address": "서울특별시 마포구 만리재로 서울서부역",
-              "lat": 37.5567,
-              "lng": 126.9572,
+              "name": "서울(서부)역",
+              "address": "서울특별시 중구 청파로 426 한국철도공사 서울본부 앞",
+              "lat": 37.557113941077986,
+              "lng": 126.96944817172442,
               "order": 1,
               "is_origin": true
             },
@@ -780,8 +780,8 @@
               "stop_id": "severance-sinchon-main",
               "name": "신촌세브란스 본관 3층",
               "address": "서울특별시 서대문구 연세로 50-1 신촌세브란스병원",
-              "lat": 37.563674036531,
-              "lng": 126.941917689273,
+              "lat": 37.56225233153921,
+              "lng": 126.94096340991969,
               "order": 3,
               "is_origin": false
             }
@@ -807,7 +807,7 @@
             "holiday": null
           },
           "fare": "무료",
-          "notes": "배차 간격 30분 / 서울서부역 출발 기준 / 용산역 경유 → 본관 3층 / 평일만 운행"
+          "notes": "배차 간격 30분 / 서울(서부)역 출발 기준 / 용산역 경유 → 본관 3층 / 평일만 운행"
         }
       ]
     },
@@ -991,8 +991,8 @@
               "stop_id": "yeoksam-1",
               "name": "역삼역 1번출구",
               "address": "서울특별시 강남구 테헤란로 역삼역 1번출구",
-              "lat": 37.50048830386,
-              "lng": 127.03685640682,
+              "lat": 37.500479553579,
+              "lng": 127.0372632678719,
               "order": 1,
               "is_origin": true
             },
@@ -1044,8 +1044,8 @@
               "stop_id": "srt-suseo-gs",
               "name": "SRT 수서역 3번출구",
               "address": "서울특별시 강남구 광평로 281 수서역 SRT 3번출구 셔틀버스 정류장",
-              "lat": 37.4881247193412,
-              "lng": 127.103147850146,
+              "lat": 37.48480647410937,
+              "lng": 127.10480152377693,
               "order": 1,
               "is_origin": true
             },
@@ -1086,52 +1086,6 @@
           },
           "fare": "무료",
           "notes": "배차 간격 30분 / SRT 수서역 3번출구 출발 기준 / 12:00·14:30 미운행"
-        },
-        {
-          "route_id": "gangnam-severance-06",
-          "route_name": "비자검진센터(삼호APT) → 강남세브란스병원",
-          "direction": "to_hospital",
-          "description": "비자검진센터 삼호APT 버스승강장 → 매봉역 2번출구 경유 → 병원 (평일만, 병원 출발 기준 +12분)",
-          "stops": [
-            {
-              "stop_id": "visa-center-samho",
-              "name": "비자검진센터(삼호APT 버스승강장)",
-              "address": "서울특별시 강남구 도곡동 삼호APT 버스승강장",
-              "lat": 37.4892,
-              "lng": 127.05,
-              "order": 1,
-              "is_origin": true
-            },
-            {
-              "stop_id": "gangnam-severance-main",
-              "name": "강남세브란스병원",
-              "address": "서울특별시 강남구 언주로 211",
-              "lat": 37.4928059943729,
-              "lng": 127.04631039276,
-              "order": 2,
-              "is_origin": false
-            }
-          ],
-          "travel_time_minutes": 12,
-          "schedules": {
-            "weekday": [
-              "08:17", "08:37", "08:57",
-              "09:17", "09:37", "09:57",
-              "10:17", "10:37", "10:57",
-              "11:17", "11:37", "11:57",
-              "12:17", "12:37", "12:57",
-              "13:17", "13:37", "13:57",
-              "14:17", "14:37", "14:57",
-              "15:17", "15:37", "15:57",
-              "16:17", "16:37", "16:57",
-              "17:17", "17:37"
-            ],
-            "saturday": null,
-            "sunday": null,
-            "holiday": null
-          },
-          "fare": "무료",
-          "notes": "배차 간격 20분 / 평일만 운행 / 비자검진센터 노선 전용 / 매봉역 경유"
         }
       ]
     },
@@ -1140,8 +1094,8 @@
       "name": "고려대학교 구로병원",
       "short_name": "고대구로병원",
       "address": "서울특별시 구로구 구로동로 148",
-      "lat": 37.4911503253664,
-      "lng": 126.884511034177,
+      "lat": 37.49213093,
+      "lng": 126.88473986,
       "phone": "02-2626-1114",
       "website": "https://guro.kumc.or.kr",
       "shuttle_info_url": "https://guro.kumc.or.kr/kr/service-guide/hospital-information/directions.do",
@@ -1165,8 +1119,8 @@
               "stop_id": "guro-kumc-new",
               "name": "고대구로병원 신관 출입구",
               "address": "서울특별시 구로구 구로동로 148 고려대학교 구로병원",
-              "lat": 37.4911503253664,
-              "lng": 126.884511034177,
+              "lat": 37.49213093,
+              "lng": 126.88473986,
               "order": 2,
               "is_origin": false
             }
@@ -1214,8 +1168,8 @@
               "stop_id": "guro-kumc-new",
               "name": "고대구로병원 신관 출입구",
               "address": "서울특별시 구로구 구로동로 148 고려대학교 구로병원",
-              "lat": 37.4911503253664,
-              "lng": 126.884511034177,
+              "lat": 37.49213093,
+              "lng": 126.88473986,
               "order": 2,
               "is_origin": false
             }
@@ -1251,8 +1205,8 @@
       "name": "한양대학교병원",
       "short_name": "한양대병원",
       "address": "서울특별시 성동구 왕십리로 222-1",
-      "lat": 37.5585815432773,
-      "lng": 127.045715688792,
+      "lat": 37.55967299,
+      "lng": 127.04410615,
       "phone": "1994-1111",
       "website": "https://seoul.hyumc.com",
       "shuttle_info_url": "https://seoul.hyumc.com/seoul/guidance/hospitaluse/directions.do",
@@ -1267,8 +1221,8 @@
               "stop_id": "wangsimni-61",
               "name": "왕십리역 6-1번출구 앞",
               "address": "서울특별시 성동구 왕십리광장로 왕십리역 6-1번출구 맞은편 던킨도너츠 앞",
-              "lat": 37.5614,
-              "lng": 127.0378,
+              "lat": 37.56121540,
+              "lng": 127.03927418,
               "order": 1,
               "is_origin": true
             },
@@ -1276,8 +1230,8 @@
               "stop_id": "hanyang-seoul-main",
               "name": "한양대병원",
               "address": "서울특별시 성동구 왕십리로 222-1 한양대학교병원",
-              "lat": 37.5545035492027,
-              "lng": 127.046611216789,
+              "lat": 37.55967299,
+              "lng": 127.04410615,
               "order": 2,
               "is_origin": false
             }
@@ -1318,9 +1272,9 @@
             {
               "stop_id": "seongdong-welfare",
               "name": "성동구 노인복지회관",
-              "address": "서울특별시 성동구 왕십리로 성동구 노인복지회관",
-              "lat": 37.5591,
-              "lng": 127.0421,
+              "address": "서울특별시 성동구 마조로 77 시립성동노인종합복지관",
+              "lat": 37.564827631589,
+              "lng": 127.041517191663,
               "order": 1,
               "is_origin": true
             },
@@ -1328,8 +1282,8 @@
               "stop_id": "hanyang-seoul-main",
               "name": "한양대병원",
               "address": "서울특별시 성동구 왕십리로 222-1 한양대학교병원",
-              "lat": 37.5545035492027,
-              "lng": 127.046611216789,
+              "lat": 37.55967299,
+              "lng": 127.04410615,
               "order": 2,
               "is_origin": false
             }
@@ -1436,8 +1390,8 @@
       "name": "이화여자대학교 목동병원",
       "short_name": "이대목동병원",
       "address": "서울특별시 양천구 안양천로 1071",
-      "lat": 37.5369818505985,
-      "lng": 126.886743916495,
+      "lat": 37.53660416,
+      "lng": 126.88628489,
       "phone": "02-2650-5114",
       "website": "https://mokdong.eumc.ac.kr",
       "shuttle_info_url": "https://mokdong.eumc.ac.kr/guide/directions.do",
@@ -1461,8 +1415,8 @@
               "stop_id": "eumc-mokdong-main",
               "name": "이대목동병원",
               "address": "서울특별시 양천구 안양천로 1071 이화여자대학교 목동병원",
-              "lat": 37.5369818505985,
-              "lng": 126.886743916495,
+              "lat": 37.53660416,
+              "lng": 126.88628489,
               "order": 2,
               "is_origin": false
             }
@@ -1520,8 +1474,8 @@
               "stop_id": "eumc-mokdong-main",
               "name": "이대목동병원",
               "address": "서울특별시 양천구 안양천로 1071 이화여자대학교 목동병원",
-              "lat": 37.5369818505985,
-              "lng": 126.886743916495,
+              "lat": 37.53660416,
+              "lng": 126.88628489,
               "order": 2,
               "is_origin": false
             }
@@ -1567,8 +1521,8 @@
       "name": "중앙대학교병원",
       "short_name": "중앙대병원",
       "address": "서울특별시 동작구 흑석로 102",
-      "lat": 37.506038005044,
-      "lng": 126.960421779226,
+      "lat": 37.50688509,
+      "lng": 126.96084478,
       "phone": "1800-1114",
       "website": "https://ch.cauhs.or.kr",
       "shuttle_info_url": "https://ch.cauhs.or.kr/home/conts/101001000000000.do",
@@ -1583,8 +1537,8 @@
               "stop_id": "isu-10",
               "name": "이수역 10번출구",
               "address": "서울특별시 동작구 동작대로 이수역(총신대입구역) 10번출구",
-              "lat": 37.485289,
-              "lng": 126.981676,
+              "lat": 37.48499548,
+              "lng": 126.98033765,
               "order": 1,
               "is_origin": true
             },
@@ -1592,8 +1546,8 @@
               "stop_id": "cau-hospital-back",
               "name": "중앙대병원 후문",
               "address": "서울특별시 동작구 흑석로 102 중앙대학교병원",
-              "lat": 37.506038005044,
-              "lng": 126.960421779226,
+              "lat": 37.50688509,
+              "lng": 126.96084478,
               "order": 2,
               "is_origin": false
             }
@@ -1626,8 +1580,8 @@
               "stop_id": "namseong-4",
               "name": "남성역 4번출구",
               "address": "서울특별시 동작구 남성역 4번출구 (분조 앞)",
-              "lat": 37.488748,
-              "lng": 126.976228,
+              "lat": 37.48435414,
+              "lng": 126.97225360,
               "order": 1,
               "is_origin": true
             },
@@ -1635,8 +1589,8 @@
               "stop_id": "cau-hospital-back",
               "name": "중앙대병원 후문",
               "address": "서울특별시 동작구 흑석로 102 중앙대학교병원",
-              "lat": 37.506038005044,
-              "lng": 126.960421779226,
+              "lat": 37.50688509,
+              "lng": 126.96084478,
               "order": 2,
               "is_origin": false
             }
@@ -1669,8 +1623,8 @@
               "stop_id": "chongsin-gate",
               "name": "총신대 정문 옆",
               "address": "서울특별시 동작구 총신대학교 정문 옆 (유아인세 앞)",
-              "lat": 37.49198,
-              "lng": 126.97245,
+              "lat": 37.48894435,
+              "lng": 126.96707316,
               "order": 1,
               "is_origin": true
             },
@@ -1678,8 +1632,8 @@
               "stop_id": "cau-hospital-back",
               "name": "중앙대병원 후문",
               "address": "서울특별시 동작구 흑석로 102 중앙대학교병원",
-              "lat": 37.506038005044,
-              "lng": 126.960421779226,
+              "lat": 37.50688509,
+              "lng": 126.96084478,
               "order": 2,
               "is_origin": false
             }
@@ -1712,8 +1666,8 @@
               "stop_id": "soongsil-2",
               "name": "숭실대입구역 2번출구",
               "address": "서울특별시 동작구 숭실대입구역 2번출구 (삼도웰빙종합병원 앞)",
-              "lat": 37.496343,
-              "lng": 126.96139,
+              "lat": 37.49570110,
+              "lng": 126.95390731,
               "order": 1,
               "is_origin": true
             },
@@ -1721,8 +1675,8 @@
               "stop_id": "cau-hospital-back",
               "name": "중앙대병원 후문",
               "address": "서울특별시 동작구 흑석로 102 중앙대학교병원",
-              "lat": 37.506038005044,
-              "lng": 126.960421779226,
+              "lat": 37.50688509,
+              "lng": 126.96084478,
               "order": 2,
               "is_origin": false
             }
@@ -1755,8 +1709,8 @@
               "stop_id": "sangdo-5",
               "name": "상도역 5번출구",
               "address": "서울특별시 동작구 상도역 5번출구 (아메드커피 앞)",
-              "lat": 37.498688,
-              "lng": 126.95331,
+              "lat": 37.50311399,
+              "lng": 126.94813495,
               "order": 1,
               "is_origin": true
             },
@@ -1764,8 +1718,8 @@
               "stop_id": "cau-hospital-back",
               "name": "중앙대병원 후문",
               "address": "서울특별시 동작구 흑석로 102 중앙대학교병원",
-              "lat": 37.506038005044,
-              "lng": 126.960421779226,
+              "lat": 37.50688509,
+              "lng": 126.96084478,
               "order": 2,
               "is_origin": false
             }
@@ -1795,24 +1749,24 @@
       "name": "순천향대학교 서울병원",
       "short_name": "순천향서울병원",
       "address": "서울특별시 용산구 대사관로 59",
-      "lat": 37.5342808357653,
-      "lng": 127.003878033451,
+      "lat": 37.53376842,
+      "lng": 127.00426540,
       "phone": "02-709-9000",
       "website": "https://www.schmc.ac.kr/seoul",
       "shuttle_info_url": "https://www.schmc.ac.kr/seoul/contents.do?key=407",
       "shuttle_routes": [
         {
           "route_id": "schmc-seoul-01",
-          "route_name": "한남역 → 순천향서울병원",
+          "route_name": "한남역 1번출구 → 순천향서울병원",
           "direction": "to_hospital",
-          "description": "경의중앙선 한남역 → 병원 (점심시간 12:30~13:30 미운행)",
+          "description": "경의중앙선 한남역 1번출구 앞 → 병원 (점심시간 12:30~13:30 미운행)",
           "stops": [
             {
               "stop_id": "hannam-station",
-              "name": "한남역",
-              "address": "서울특별시 용산구 독서당로 한남역 경의중앙선",
-              "lat": 37.5294289189437,
-              "lng": 127.009209110584,
+              "name": "한남역 1번출구",
+              "address": "서울특별시 용산구 독서당로 한남역 경의중앙선 1번출구",
+              "lat": 37.529299256734575,
+              "lng": 127.00808906962116,
               "order": 1,
               "is_origin": true
             },
@@ -1820,8 +1774,8 @@
               "stop_id": "schmc-seoul-main",
               "name": "순천향서울병원",
               "address": "서울특별시 용산구 대사관로 59 순천향대학교 서울병원",
-              "lat": 37.5342808357653,
-              "lng": 127.003878033451,
+              "lat": 37.53376842,
+              "lng": 127.00426540,
               "order": 2,
               "is_origin": false
             }
@@ -1849,16 +1803,16 @@
         },
         {
           "route_id": "schmc-seoul-02",
-          "route_name": "한강진역 → 순천향서울병원",
+          "route_name": "한강진역 2번출구 → 순천향서울병원",
           "direction": "to_hospital",
-          "description": "지하철 6호선 한강진역 → 병원 (점심시간 12:30~13:30 미운행)",
+          "description": "지하철 6호선 한강진역 2번출구 앞 → 병원 (점심시간 12:30~13:30 미운행)",
           "stops": [
             {
               "stop_id": "hangangjin",
-              "name": "한강진역",
-              "address": "서울특별시 용산구 이태원로 한강진역 6호선",
-              "lat": 37.5397907743775,
-              "lng": 127.001765135176,
+              "name": "한강진역 2번출구",
+              "address": "서울특별시 용산구 이태원로 한강진역 6호선 2번출구",
+              "lat": 37.5405259871442,
+              "lng": 127.001968823951,
               "order": 1,
               "is_origin": true
             },
@@ -1866,8 +1820,8 @@
               "stop_id": "schmc-seoul-main",
               "name": "순천향서울병원",
               "address": "서울특별시 용산구 대사관로 59 순천향대학교 서울병원",
-              "lat": 37.5342808357653,
-              "lng": 127.003878033451,
+              "lat": 37.53376842,
+              "lng": 127.00426540,
               "order": 2,
               "is_origin": false
             }

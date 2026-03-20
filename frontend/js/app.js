@@ -247,8 +247,9 @@ async function search() {
     });
 
     if (!res.ok) {
-      const err = await res.json();
-      throw new Error(err.detail || "경로 탐색 실패");
+      let msg = "경로 탐색 실패";
+      try { const err = await res.json(); msg = err.detail || msg; } catch {}
+      throw new Error(msg);
     }
 
     const data = await res.json();
@@ -467,34 +468,8 @@ function renderSegment(seg) {
 
   if (seg.type === "transit_to_stop") {
     if (seg.detail && seg.detail.length > 0) {
-      const detailHtml = seg.detail.map((d) => {
-        const timeTag = d.start_time ? `<span class="seg-dep-time">${d.start_time}</span> ` : "";
-        if (d.type === "walk") {
-          return `<div class="transit-detail-item">🚶 ${timeTag}도보 ${d.distance_m ? d.distance_m + "m" : ""} (${d.duration_minutes}분)</div>`;
-        }
-        if (d.type === "subway") {
-          return `<div class="transit-detail-item">🚇 ${timeTag}<strong>${d.line_name}</strong> ${d.from_name} → ${d.to_name} (${d.station_count}역, ${d.duration_minutes}분)</div>`;
-        }
-        if (d.type === "bus") {
-          return `<div class="transit-detail-item">🚌 ${timeTag}<strong>${d.bus_no}번</strong> ${d.from_name} → ${d.to_name} (${d.station_count}정류장, ${d.duration_minutes}분)</div>`;
-        }
-        return "";
-      }).join("");
-      return `
-        <li class="segment-item" style="flex-direction:column;align-items:flex-start;gap:6px;">
-          <div style="display:flex;width:100%;align-items:center;gap:10px;">
-            <div class="segment-icon seg-transit">🚇</div>
-            <div class="segment-info" style="flex:1;">
-              <div class="segment-label">${seg.from_name} → ${seg.to_name}</div>
-            </div>
-            <div class="segment-time">약 ${Math.round(seg.duration_minutes)}분</div>
-          </div>
-          <div style="padding-left:52px;width:100%;box-sizing:border-box;">
-            ${detailHtml}
-            ${mapLinksHtml(seg.from_lat, seg.from_lng, seg.from_name, seg.to_lat, seg.to_lng, seg.to_name, "transit")}
-          </div>
-        </li>
-      `;
+      // 상세 데이터가 있으면 각 항목을 독립 세그먼트로 펼쳐서 표시
+      return seg.detail.map((d) => renderTransitDetailAsFlatSegment(d)).join("");
     }
 
     return `
@@ -534,6 +509,59 @@ function renderSegment(seg) {
           <div class="segment-desc">${seg.route_name} · ${seg.departure_time} 출발</div>
         </div>
         <div class="segment-time">${seg.duration_minutes}분</div>
+      </li>
+    `;
+  }
+
+  return "";
+}
+
+function renderTransitDetailAsFlatSegment(d) {
+  const depTime = d.start_time ? `<div class="segment-desc">${d.start_time} 출발</div>` : "";
+
+  if (d.type === "walk") {
+    if (!d.duration_minutes) return "";
+    const distText = d.distance_m ? ` · 약 ${d.distance_m}m` : "";
+    const walkLinks = (d.from_lat && d.to_lat)
+      ? mapLinksHtml(d.from_lat, d.from_lng, d.from_name || "출발지", d.to_lat, d.to_lng, d.to_name || "도착지", "walk")
+      : "";
+    return `
+      <li class="segment-item">
+        <div class="segment-icon seg-walk">🚶</div>
+        <div class="segment-info">
+          <div class="segment-label">도보${distText}</div>
+          ${d.from_name && d.to_name ? `<div class="segment-desc">${d.from_name} → ${d.to_name}</div>` : ""}
+          ${walkLinks}
+        </div>
+        <div class="segment-time">${Math.round(d.duration_minutes)}분</div>
+      </li>
+    `;
+  }
+
+  if (d.type === "subway") {
+    return `
+      <li class="segment-item">
+        <div class="segment-icon seg-transit">🚇</div>
+        <div class="segment-info">
+          <div class="segment-label" style="color:#1565C0;">${d.line_name}</div>
+          ${depTime}
+          <div class="segment-desc">${d.from_name} → ${d.to_name} · ${d.station_count}역</div>
+        </div>
+        <div class="segment-time">${d.duration_minutes}분</div>
+      </li>
+    `;
+  }
+
+  if (d.type === "bus") {
+    return `
+      <li class="segment-item">
+        <div class="segment-icon" style="background:#FFF3E0;color:#E65100;font-size:16px;">🚌</div>
+        <div class="segment-info">
+          <div class="segment-label" style="color:#E65100;">${d.bus_no}번 버스</div>
+          ${depTime}
+          <div class="segment-desc">${d.from_name} → ${d.to_name} · ${d.station_count}정류장</div>
+        </div>
+        <div class="segment-time">${d.duration_minutes}분</div>
       </li>
     `;
   }
