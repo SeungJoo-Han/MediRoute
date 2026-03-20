@@ -168,6 +168,25 @@ input:focus, select:focus {
 
 .autocomplete-item:hover { background: #F3F7FF; }
 
+.autocomplete-group-header {
+  padding: 7px 14px 5px !important;
+  font-size: 11px !important;
+  font-weight: 800 !important;
+  color: #1565C0 !important;
+  background: #E8F0FE !important;
+  border-top: 1px solid #C5D8FF !important;
+  border-bottom: 1px solid #C5D8FF !important;
+  letter-spacing: 1px !important;
+  font-family: 'Noto Sans KR', sans-serif !important;
+  cursor: default;
+  pointer-events: none;
+  user-select: none;
+}
+
+.autocomplete-group-header:first-child {
+  border-top: none !important;
+}
+
 .autocomplete-item .place-name { font-weight: 600; color: var(--text); }
 .autocomplete-item .place-address { color: var(--text-secondary); font-size: 12px; }
 

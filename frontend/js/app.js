@@ -137,26 +137,56 @@ async function loadHospitals() {
 }
 
 // ===== 병원 검색 드롭다운 =====
-function renderHospitalDropdown(query = "") {
-  const filtered = query.trim()
-    ? hospitals.filter((h) => h.name.includes(query) || (h.short_name && h.short_name.includes(query)))
-    : hospitals;
+const HOSPITAL_GROUPS = [
+  { label: "가톨릭대학교", ids: ["cmcyoido", "cmcseoul", "cmcep"] },
+  { label: "연세대학교",   ids: ["severance-sinchon", "gangnam-severance"] },
+  { label: "성균관대학교", ids: ["samsungh"] },
+  { label: "울산대학교",   ids: ["amc"] },
+  { label: "고려대학교",   ids: ["guro-kumc"] },
+  { label: "한양대학교",   ids: ["hanyang-seoul"] },
+  { label: "이화여자대학교", ids: ["eumc-mokdong"] },
+  { label: "중앙대학교",   ids: ["cau-hospital"] },
+  { label: "순천향대학교", ids: ["schmc-seoul"] },
+];
 
-  elHospitalList.innerHTML = "";
-  if (filtered.length === 0) { closeHospitalDropdown(); return; }
-
-  filtered.forEach((h) => {
-    const item = document.createElement("div");
-    item.className = "autocomplete-item";
-    item.innerHTML = `<span class="place-name">${h.name}</span>`;
-    item.addEventListener("mousedown", (e) => {
-      e.preventDefault();
-      selectedHospitalId = h.id;
-      elHospitalSearch.value = h.name;
-      closeHospitalDropdown();
-    });
-    elHospitalList.appendChild(item);
+function appendHospitalItem(h) {
+  const item = document.createElement("div");
+  item.className = "autocomplete-item";
+  item.innerHTML = `<span class="place-name">${h.name}</span>`;
+  item.addEventListener("mousedown", (e) => {
+    e.preventDefault();
+    selectedHospitalId = h.id;
+    elHospitalSearch.value = h.name;
+    closeHospitalDropdown();
   });
+  elHospitalList.appendChild(item);
+}
+
+function renderHospitalDropdown(query = "") {
+  elHospitalList.innerHTML = "";
+
+  if (query.trim()) {
+    // 검색 시: flat 리스트
+    const filtered = hospitals.filter((h) =>
+      h.name.includes(query) || (h.short_name && h.short_name.includes(query))
+    );
+    if (filtered.length === 0) { closeHospitalDropdown(); return; }
+    filtered.forEach(appendHospitalItem);
+  } else {
+    // 전체 표시: 대학별 그룹핑
+    HOSPITAL_GROUPS.forEach((group) => {
+      const groupHospitals = group.ids.map((id) => hospitals.find((h) => h.id === id)).filter(Boolean);
+      if (groupHospitals.length === 0) return;
+
+      const header = document.createElement("div");
+      header.className = "autocomplete-group-header";
+      header.textContent = group.label;
+      elHospitalList.appendChild(header);
+
+      groupHospitals.forEach(appendHospitalItem);
+    });
+    if (elHospitalList.children.length === 0) { closeHospitalDropdown(); return; }
+  }
 
   elHospitalList.style.display = "block";
 }

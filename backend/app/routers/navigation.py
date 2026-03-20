@@ -122,14 +122,24 @@ async def find_route(req: RouteRequest):
             if seg["type"] == "transit_to_stop":
                 transit_to_stop_indices.append((r_idx, s_idx, seg["to_lat"], seg["to_lng"]))
 
-    # 병렬 API 호출
+    # 동시 최대 5개 제한 (too many requests 방지)
     tasks = [
         search_transit_routes(origin["lat"], origin["lng"], hospital["lat"], hospital["lng"])
     ]
     for _, _, to_lat, to_lng in transit_to_stop_indices:
         tasks.append(search_transit_routes(origin["lat"], origin["lng"], to_lat, to_lng))
 
-    all_results = await asyncio.gather(*tasks, return_exceptions=True)
+    sem = asyncio.Semaphore(4)
+
+    async def limited(coro, delay: float = 0):
+        await asyncio.sleep(delay)
+        async with sem:
+            return await coro
+
+    all_results = await asyncio.gather(
+        *[limited(t, delay=i * 0.3) for i, t in enumerate(tasks)],
+        return_exceptions=True
+    )
 
     # 5. 병원행 직통 대중교통 결과 처리
     transit_routes_raw = all_results[0] if not isinstance(all_results[0], Exception) else None
