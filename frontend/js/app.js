@@ -426,8 +426,17 @@ function createRouteCard(route, isBest) {
   card.className = `route-card${isBest ? " best" : ""}`;
 
   const totalMin = Math.round(route.total_minutes);
-
   const modeLabel = route.to_stop_mode === "transit" ? "대중교통+셔틀" : "셔틀버스";
+
+  const stopSeg = route.segments.find(s => s.type === "walk" || s.type === "transit_to_stop");
+  const stopMapLinks = (stopSeg && stopSeg.to_lat && currentRouteData)
+    ? mapLinksHtml(
+        currentRouteData.origin.lat, currentRouteData.origin.lng, currentRouteData.origin.address || "출발지",
+        stopSeg.to_lat, stopSeg.to_lng, stopSeg.to_name,
+        route.to_stop_mode === "walk" ? "walk" : "transit"
+      )
+    : "";
+  const stopMapHint = stopSeg ? `<div class="map-link-timehint" style="margin-bottom:4px;">📍 ${stopSeg.to_name}까지 길찾기</div>` : "";
 
   card.innerHTML = `
     <div class="route-card-header">
@@ -448,6 +457,7 @@ function createRouteCard(route, isBest) {
         ${route.segments.map(renderSegment).join("")}
       </ul>
       ${route.notes ? `<div style="margin-top:10px;font-size:12px;color:#616161;">📌 ${route.notes}</div>` : ""}
+      ${stopMapLinks ? `<div class="route-detail-maplinks">${stopMapHint}${stopMapLinks}</div>` : ""}
     </div>
   `;
 
@@ -625,11 +635,11 @@ function createTransitCard(route, isRecommended) {
       <ul class="segment-list">
         ${route.segments.map(renderTransitSegment).join("")}
       </ul>
-      ${currentRouteData ? mapLinksHtml(
+      ${currentRouteData ? `<div class="route-detail-maplinks">${mapLinksHtml(
           currentRouteData.origin.lat, currentRouteData.origin.lng, currentRouteData.origin.address || "출발지",
           currentRouteData.hospital.lat, currentRouteData.hospital.lng, currentRouteData.hospital.name,
           "transit"
-        ) : ""}
+        )}</div>` : ""}
     </div>
   `;
 
