@@ -276,7 +276,75 @@ async def find_route(req: RouteRequest):
                 if i < len(lanes):
                     s["lane_coords"] = lanes[i]
 
-    # 9. 모든 시간 업데이트 완료 후 재정렬 + 추천 결정
+    # 9. 셔틀 세그먼트 실제 도로 좌표 (Kakao car route)
+    shuttle_road_tasks = []   # coroutine list
+    shuttle_road_segs  = []   # 대응 shuttle segment list
+    shuttle_road_legs  = []   # 각 task 가 속한 (seg, leg_index) → 나중에 concatenate
+
+    for route in result["routes"]:
+        for seg in route.get("segments", []):
+            if seg["type"] != "shuttle":
+                continue
+            waypoints = seg.get("waypoints", [])
+            # 경유지 포함 전체 경로 포인트
+            all_pts = (
+                [{"lat": seg["from_lat"], "lng": seg["from_lng"]}]
+                + [{"lat": wp["lat"], "lng": wp["lng"]} for wp in waypoints]
+                + [{"lat": seg["to_lat"], "lng": seg["to_lng"]}]
+            )
+            seg["_road_leg_count"] = len(all_pts) - 1
+            for i in range(len(all_pts) - 1):
+                a, b = all_pts[i], all_pts[i + 1]
+                shuttle_road_tasks.append(
+                    limited(get_car_route(a["lat"], a["lng"], b["lat"], b["lng"]), delay=i * 0.2)
+                )
+                shuttle_road_segs.append(seg)
+                shuttle_road_legs.append(i)
+
+    if shuttle_road_tasks:
+        road_results = await asyncio.gather(*shuttle_road_tasks, return_exceptions=True)
+        seg_data: dict[int, dict] = {}   # id(seg) → {leg_idx: {"coords": [...], "dur": float}}
+        for seg, leg_idx, road_res in zip(shuttle_road_segs, shuttle_road_legs, road_results):
+            if isinstance(road_res, Exception) or not road_res:
+                continue
+            key = id(seg)
+            if key not in seg_data:
+                seg_data[key] = {}
+            seg_data[key][leg_idx] = {
+                "coords": road_res.get("road_coords", []),
+                "dur":    road_res.get("duration_min", 0),
+            }
+
+        for route in result["routes"]:
+            for seg in route.get("segments", []):
+                if seg["type"] != "shuttle":
+                    continue
+                key = id(seg)
+                n_legs = seg.pop("_road_leg_count", 0)
+                if key not in seg_data:
+                    continue
+                combined_coords = []
+                total_dur = 0.0
+                for i in range(n_legs):
+                    leg = seg_data[key].get(i)
+                    if leg:
+                        combined_coords.extend(leg["coords"])
+                        total_dur += leg["dur"]
+                if combined_coords:
+                    seg["road_coords"] = combined_coords
+                if total_dur > 0:
+                    old_dur = seg.get("duration_minutes", 0)
+                    new_dur = round(total_dur, 1)
+                    seg["duration_minutes"] = new_dur
+                    # total_minutes 보정: 셔틀 이동시간 차이만큼 조정
+                    route["total_minutes"] = round(
+                        route["total_minutes"] - old_dur + new_dur, 1
+                    )
+                    # arrival_time 재계산
+                    arr = dep_dt + timedelta(minutes=route["total_minutes"])
+                    route["arrival_time"] = arr.strftime("%H:%M")
+
+    # 10. 모든 시간 업데이트 완료 후 재정렬 + 추천 결정
     if result["routes"]:
         result["routes"].sort(key=lambda r: r["total_minutes"])
 

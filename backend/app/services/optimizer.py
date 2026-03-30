@@ -251,6 +251,10 @@ def calculate_routes(
                     "duration_minutes": shuttle_travel_min,
                     "departure_time": next_dep["departure_str"],
                     "route_name": route["route_name"],
+                    "waypoints": [
+                        {"name": wp["name"], "lat": wp["lat"], "lng": wp["lng"]}
+                        for wp in route.get("waypoints", [])
+                    ],
                 },
             ],
         })

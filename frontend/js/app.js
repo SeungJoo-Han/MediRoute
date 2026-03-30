@@ -540,12 +540,15 @@ function renderSegment(seg) {
   }
 
   if (seg.type === "shuttle") {
+    const waypoints = seg.waypoints || [];
+    const stopNames = [seg.from_name, ...waypoints.map(wp => wp.name), seg.to_name];
+    const routeDesc = stopNames.join(" → ");
     return `
       <li class="segment-item">
         <div class="segment-icon seg-shuttle">🚌</div>
         <div class="segment-info">
           <div class="segment-label">셔틀버스</div>
-          <div class="segment-desc">${seg.from_name} → ${seg.to_name}</div>
+          <div class="segment-desc">${routeDesc}</div>
           <div class="segment-desc">${seg.route_name} · ${seg.departure_time} 출발</div>
         </div>
         <div class="segment-time">${seg.duration_minutes}분</div>

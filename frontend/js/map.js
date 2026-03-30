@@ -199,11 +199,22 @@ const linePoints = (seg.lane_coords && seg.lane_coords.length >= 2)
         allPoints.push({ lat: seg.to_lat, lng: seg.to_lng });
 
       } else if (seg.type === "shuttle") {
-        // 셔틀버스: 초록 실선 (road_coords 있으면 실제 도로선)
-        const shuttlePoints = (seg.road_coords && seg.road_coords.length >= 2)
-          ? seg.road_coords
-          : [{ lat: seg.from_lat, lng: seg.from_lng }, { lat: seg.to_lat, lng: seg.to_lng }];
-        drawLine({ points: shuttlePoints, color: COLORS.shuttle, strokeWeight: 5 });
+        // 셔틀버스: 초록 실선 (road_coords 있으면 실제 도로, 없으면 waypoints 직선)
+        const waypoints = seg.waypoints || [];
+        if (seg.road_coords && seg.road_coords.length >= 2) {
+          drawLine({ points: seg.road_coords, color: COLORS.shuttle, strokeWeight: 5 });
+        } else {
+          const fallbackPath = [
+            { lat: seg.from_lat, lng: seg.from_lng },
+            ...waypoints.map(wp => ({ lat: wp.lat, lng: wp.lng })),
+            { lat: seg.to_lat, lng: seg.to_lng },
+          ];
+          drawLine({ points: fallbackPath, color: COLORS.shuttle, strokeWeight: 5 });
+        }
+        waypoints.forEach(wp => {
+          addMarker({ lat: wp.lat, lng: wp.lng, label: wp.name, color: COLORS.shuttle_stop, zIndex: 2 });
+          allPoints.push({ lat: wp.lat, lng: wp.lng });
+        });
         allPoints.push({ lat: seg.from_lat, lng: seg.from_lng });
         allPoints.push({ lat: seg.to_lat,   lng: seg.to_lng   });
       }
